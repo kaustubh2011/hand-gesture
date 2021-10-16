@@ -17,16 +17,45 @@ function takepic()
 
 }
 console.log("ml5 version",ml5.version);
-classifier=ml5.imageClassifier('',modelloaded);
+
+classifier=ml5.imageClassifier('https://teachablemachine.withgoogle.com/models/tXm60g-vj/model.json',modelloaded);
+
 function modelloaded()
 {
     console.log('model is loaded');
 }
-function speak()
+
+function check()
 {
-    var synth=window.speechSynthesis;
-    speak_1="the first prediction is"+predict_1;
-    speak_2=" and the second prediction is"+predict_2;
-    var utterThis=new SpeechSynthesisUtterance(speak_1+speak_2);
-    synth.speak(utterThis);
+    img=document.getElementById("captured_image");
+    classifier.classify(img,gotresult);
+}
+function gotresult(error,results)
+{
+if(error){
+    console.error(error);
+}
+else{
+    console.log(results);
+    document.getElementById("name1").innerHTML=results[0].label;
+    document.getElementById("name2").innerHTML=results[1].label;
+    predict_1=results[0].label;
+    predict_2=results[1].label;
+   
+    if(results[0].label=="amazing")
+    {
+        document.getElementById("emoji1").innerHTML="&#128076;";
+    }
+    if(results[0].label=="best")
+    {
+        document.getElementById("emoji1").innerHTML="&#128077;";
+    }
+    if(results[0].label=="victory")
+    {
+        document.getElementById("emoji1").innerHTML="&#9996;";
+    }
+   
+    
+
+}
 }
